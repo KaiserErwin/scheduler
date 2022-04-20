@@ -7,6 +7,7 @@ import CustomError from '../lib/customError.lib';
 import logger from '../lib/logger.lib';
 import { AuthService } from '../services/auth.service';
 
+const authService: AuthService = new AuthService();
 /**
  * AuthController.
  */
@@ -14,7 +15,6 @@ export class AuthController {
   /**
    * @type {AuthService}
    */
-  private authService: AuthService = new AuthService();
 
   /**
    * login.
@@ -32,7 +32,7 @@ export class AuthController {
         throw new CustomError(ApiError.Auth.badAuth);
       }
 
-      const { user, token } = await this.authService.login(email, password, userTypeParsed);
+      const { user, token } = await authService.login(email, password, userTypeParsed);
 
       res.send(new APIResponse(true, { user, token }));
     } catch (err) {

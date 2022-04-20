@@ -6,7 +6,7 @@ import { APIResponse } from '../lib/APIResponse.lib';
 import CustomError from '../lib/customError.lib';
 import { ApiError } from '../enums/error.enum';
 
-  const adminService: AdminService = new AdminService();
+const adminService: AdminService = new AdminService();
 /**
  * AdminController.
  */

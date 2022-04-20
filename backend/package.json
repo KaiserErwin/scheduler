@@ -10,12 +10,10 @@
     "docker-compose": "docker-compose up",
     "docker-compose-build": "docker-compose up --build",
     "migrate": "node_modules/.bin/sequelize db:migrate",
-    "migrate-undo": "node_modules/.bin/sequelize db:migrate:undo",
-    "migrate-test-db": "ENV=test node_modules/.bin/sequelize db:migrate",
-    "migrate-test-db-undo": "ENV=test node_modules/.bin/sequelize db:migrate:undo",
     "start": "NODE_PATH=dist/src/ node dist/src/server.js",
     "lint": "eslint -c .eslintrc.json --ext .ts ./src/",
-    "format": "prettier -w --config ./.prettierrc ./src"
+    "format": "prettier -w --config ./.prettierrc ./src",
+    "seed": "env $(cat .env | xargs) npx ts-node src/seed/admin/seed_admin.ts"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",
@@ -28,8 +26,10 @@
     "@typescript-eslint/eslint-plugin-tslint": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
     "bcrypt": "^5.0.1",
+    "body-parser": "~1.18.2",
     "class-transformer": "^0.5.1",
     "cors": "^2.8.5",
+    "csv-parse": "4.0.1",
     "dotenv": "^4.0.0",
     "eslint": "^8.10.0",
     "eslint-plugin-import": "^2.25.4",
@@ -44,7 +44,6 @@
     "morgan": "^1.9.0",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
-    "body-parser": "~1.18.2",
     "pino": "^6.13.0",
     "pino-pretty": "^5.1.3",
     "reflect-metadata": "^0.1.13",

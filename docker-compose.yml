@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+    secheduler_backend:
+        image: "node:16-alpine"
+        working_dir: /usr/src/app/server
+        volumes:
+            - ./backend:/usr/src/app/backend
+            - ${HOME_CLOUD_STORAGE}:/usr/src/app/storage
+        command: "npm run dev"
+
+    secheduler_frontend:
+        image: "node:16-alpine"
+        working_dir: /usr/src/app/frontend
+        volumes:
+            - ./frontend:/usr/src/app/frontend
+        command: "npm start"
