@@ -5,3 +5,8 @@ export interface UserRegisterRequest {
   lastName: string;
   password: string;
 }
+
+export interface UserUpdateRequest {
+  firstName: string;
+  lastName: string;
+}

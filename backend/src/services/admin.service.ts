@@ -1,9 +1,10 @@
-import { AdminRegisterRequest } from '../types/admin/request';
+import { AdminRegisterRequest, AdminUpdateRequest } from '../types/admin/request';
 import Admin from '../model/admin.model';
 import { AdminDTO } from '../types/admin/model';
 import { hashPassword, comparePassword } from '../utils/bcrypt.utils';
 import CustomError from '../lib/customError.lib';
 import { ApiError } from '../enums/error.enum';
+import logger from 'lib/logger.lib';
 
 /**
  * AdminService.
@@ -32,7 +33,7 @@ export class AdminService {
       password: hashedPassword,
     });
 
-    delete admin.password
+    delete admin.password;
 
     return admin;
   }
@@ -70,6 +71,34 @@ export class AdminService {
     }
 
     return admin;
+  }
+
+  /**
+   * updateAdmin.
+   *
+   * @param {string} adminId
+   * @param {AdminUpdateRequest} newAdmin
+   * @returns {Promise<AdminDTO>}
+   */
+  public async updateAdmin(adminId: string, newAdmin: AdminUpdateRequest): Promise<AdminDTO> {
+    const admin = await Admin.findOne({
+      where: {
+        adminId,
+      },
+    });
+
+    if (!admin) {
+      throw new CustomError(ApiError.Admin.adminNotExist);
+    }
+
+    const adminUpdated = await Admin.update(newAdmin, {
+      where: {
+        adminId,
+      },
+      returning: true,
+    });
+
+    return adminUpdated[1][0];
   }
 }
 

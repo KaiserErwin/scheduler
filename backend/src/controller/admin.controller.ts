@@ -29,6 +29,7 @@ export class AdminController {
       next(err);
     }
   }
+
   /**
    * getAdminById.
    *
@@ -41,10 +42,34 @@ export class AdminController {
       const adminId = req.params.adminId;
 
       if (+adminId !== +res.locals.adminId) {
-        throw new CustomError(ApiError.Auth.unauthorized)
+        throw new CustomError(ApiError.Auth.unauthorized);
       }
 
       const admin = await adminService.getAdminById(adminId);
+
+      res.send(new APIResponse(true, admin));
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  /**
+   * updateAdmin.
+   *
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   */
+  public async updateAdmin(req: Request, res: Response, next: NextFunction) {
+    try {
+      const adminId = req.params.adminId;
+      const newAdmin = req.body;
+
+      if (+adminId !== +res.locals.adminId) {
+        throw new CustomError(ApiError.Auth.unauthorized);
+      }
+
+      const admin = await adminService.updateAdmin(adminId, newAdmin);
 
       res.send(new APIResponse(true, admin));
     } catch (err) {

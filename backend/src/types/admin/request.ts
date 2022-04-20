@@ -4,3 +4,8 @@ export interface AdminRegisterRequest {
   firstName?: string;
   lastName?: string;
 }
+
+export interface AdminUpdateRequest {
+  firstName: string;
+  lastName: string;
+}

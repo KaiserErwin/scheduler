@@ -52,4 +52,28 @@ export class UserController {
       next(err);
     }
   }
+
+  /**
+   * updateUser.
+   *
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   */
+  public async updateUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.params.userId;
+      const newUser = req.body;
+
+      if (+userId !== +res.locals.userId) {
+        throw new CustomError(ApiError.Auth.unauthorized);
+      }
+
+      const user = await userService.updateUser(userId, newUser);
+
+      res.send(new APIResponse(true, user));
+    } catch (err) {
+      next(err);
+    }
+  }
 }

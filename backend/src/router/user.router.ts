@@ -13,6 +13,7 @@ router.route('/').post(userController.createUser);
 
 router
   .route('/:userId')
-  .get(middlewareSerice.authorizeRoles([UserType.USER]), userController.getUserById);
+  .get(middlewareSerice.authorizeRoles([UserType.USER]), userController.getUserById)
+  .patch(middlewareSerice.authorizeRoles([UserType.USER]), userController.updateUser);
 
 export const UserRouter = router;
