@@ -22,18 +22,18 @@ router.use(async (req, res, next) => {
     const { user, userType } = await authService.getSessionByToken(token)
     logger.debug({ user, userType }, 'authMiddleware')
 
-    switch (user) {
-      case user as Admin:
+    switch (userType) {
+      case UserType.ADMIN:
         res.locals.adminId = user.adminId
         res.locals.admin = user
         res.locals.token = token
-        res.locals.userType = UserType.ADMIN
+        res.locals.userType = UserType[userType]
         return next()
-      case user as User:
+      case UserType.USER:
         res.locals.userId = user.userId
         res.locals.user = user
         res.locals.token = token
-        res.locals.userType = UserType.USER
+        res.locals.userType = UserType[userType]
         return next()
     }
   } catch (err) {

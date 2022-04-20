@@ -11,6 +11,12 @@ export namespace ApiError {
     adminNotExist,
     adminAlreadyExists
   }
+
+  export enum User {
+    generic = 3000,
+    userNotExist,
+    userAlreadyExists,
+  }
 }
 
 const customErrors = [];
@@ -38,5 +44,16 @@ customErrors[ApiError.Admin.adminAlreadyExists] = {
   message: 'Admin already exists',
   statusCode: 409
 }
+
+customErrors[ApiError.User.userNotExist] = {
+  message: 'User not exist',
+  statusCode: 404
+}
+
+customErrors[ApiError.User.userAlreadyExists] = {
+  message: 'User already exists',
+  statusCode: 409
+}
+
 
 export { customErrors };

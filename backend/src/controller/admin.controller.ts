@@ -26,7 +26,6 @@ export class AdminController {
 
       res.send(new APIResponse(true, admin));
     } catch (err) {
-      logger.error({ err });
       next(err);
     }
   }
@@ -41,7 +40,7 @@ export class AdminController {
     try {
       const adminId = req.params.adminId;
 
-      if (adminId !== res.locals.adminId) {
+      if (+adminId !== +res.locals.adminId) {
         throw new CustomError(ApiError.Auth.unauthorized)
       }
 
@@ -49,7 +48,6 @@ export class AdminController {
 
       res.send(new APIResponse(true, admin));
     } catch (err) {
-      logger.error({ err });
       next(err);
     }
   }

@@ -1,6 +1,7 @@
 import { comparePassword } from '../utils/bcrypt.utils';
 import { UserType } from '../enums/userType.enum';
 import AdminService from './admin.service';
+import UserService from './user.service'
 import { AdminDTO } from '../types/admin/model';
 import CustomError from '../lib/customError.lib';
 import { ApiError } from '../enums/error.enum';
@@ -10,17 +11,22 @@ import { CryptoUtils } from 'src/utils/crypto.utils';
 import Session from '../model/session.model';
 import logger from 'lib/logger.lib';
 
+/**
+ * IGetSessionByTokenReturn.
+ */
 export interface IGetSessionByTokenReturn {
-  user: Admin | User
+  user: any
   userType: UserType
 }
+
+const adminService:AdminService = new AdminService()
+const userService: UserService = new UserService()
 
 /**
  * AuthService.
  */
 export class AuthService {
 
-  private adminService: AdminService = new AdminService()
   /**
    * Get data depending on the type of user
    * @param {string} email
@@ -30,7 +36,7 @@ export class AuthService {
   private async getUserData(email: string, userType: UserType): Promise<Admin | User> {
     switch (userType) {
       case UserType.ADMIN:
-        return await this.adminService.getAdminByEmail(email);
+        return await adminService.getAdminByEmail(email);
       case UserType.USER:
         return await User.findOne({
           where: {
@@ -46,29 +52,22 @@ export class AuthService {
    * @param {UserType} userType
    * @returns {Promise<String>} token
    * */
-  private async createSession(user: Admin | User, userType: UserType): Promise<String> {
+  private async createSession(user: any, userType: UserType): Promise<String> {
     const token = await new CryptoUtils().generateSessionToken();
 
-    switch (user) {
-      case user as Admin:
+    switch (userType) {
+      case UserType.ADMIN:
         await Session.create({
           adminId: user.adminId,
           token,
         });
         break;
-      case user as User:
+      case UserType.USER:
         await Session.create({
           userId: user.userId,
           token,
         });
         break;
-    }
-
-    if (userType === UserType[UserType.ADMIN]) {
-      user = user as Admin;
-    }
-    if (userType === UserType[UserType.USER]) {
-      user = user as User;
     }
 
     return token;
@@ -96,6 +95,12 @@ export class AuthService {
     return { user, token };
   }
 
+  /**
+   * getSessionByToken.
+   *
+   * @param {string} token
+   * @returns {Promise<IGetSessionByTokenReturn>}
+   */
   public async getSessionByToken(token: string): Promise<IGetSessionByTokenReturn>{
     const session = await Session.findOne({
       where: {
@@ -103,20 +108,27 @@ export class AuthService {
       }
     })
 
+    logger.debug({ session })
+
     if (!session) {
       throw new CustomError(ApiError.Auth.sessionNotExist)
     }
 
     let user
 
-    if (session?.adminId) {
-      user = await this.adminService.getAdminById(session.adminId.toString())
+    if (session['adminId']) {
+      user = await adminService.getAdminById(session.adminId.toString())
       return {
         user,
         userType: UserType.ADMIN
       }
     }
-    if (session?.userId) {
+    if (session['userId']) {
+      user = await userService.getUserById(session.userId.toString())
+      return {
+        user,
+        userType: UserType.USER
+      }
     }
   }
 }

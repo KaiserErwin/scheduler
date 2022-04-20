@@ -5,6 +5,9 @@ import { hashPassword, comparePassword } from '../utils/bcrypt.utils';
 import CustomError from '../lib/customError.lib';
 import { ApiError } from '../enums/error.enum';
 
+/**
+ * AdminService.
+ */
 export class AdminService {
   /**
    * Create Admin
@@ -34,6 +37,12 @@ export class AdminService {
     return admin;
   }
 
+  /**
+   * getAdminById.
+   *
+   * @param {string} adminId
+   * @returns {Promise<AdminDTO>}
+   */
   public async getAdminById(adminId: string): Promise<AdminDTO> {
     const admin = await Admin.scope('data').findByPk(adminId);
 
@@ -44,6 +53,11 @@ export class AdminService {
     return admin;
   }
 
+  /**
+   * getAdminByEmail.
+   *
+   * @param {string} email
+   */
   public async getAdminByEmail(email: string) {
     const admin = await Admin.findOne({
       where: {

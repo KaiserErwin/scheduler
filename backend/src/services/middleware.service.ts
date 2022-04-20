@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { UserType } from '../enums/userType.enum';
 import { ApiError } from '../enums/error.enum';
 import CustomError from 'lib/customError.lib';
+import logger from 'lib/logger.lib';
 
 export class MiddlewareService {
   public authorizeRoles(roles: UserType[]) {
