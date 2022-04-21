@@ -16,6 +16,17 @@ export namespace ApiError {
     generic = 3000,
     userNotExist,
     userAlreadyExists,
+    userIsNotInAnyEvent
+  }
+
+  export enum Attend {
+    generic = 4000,
+    attendNotExist,
+  }
+
+  export enum Event {
+    generic = 5000,
+    eventNotExist,
   }
 }
 
@@ -53,6 +64,21 @@ customErrors[ApiError.User.userNotExist] = {
 customErrors[ApiError.User.userAlreadyExists] = {
   message: 'User already exists',
   statusCode: 409
+}
+
+customErrors[ApiError.User.userIsNotInAnyEvent] = {
+  message: 'User already exists',
+  statusCode: 409
+}
+
+customErrors[ApiError.Attend.attendNotExist] = {
+  message: 'Attend not exist',
+  statusCode: 404
+}
+
+customErrors[ApiError.Event.eventNotExist] = {
+  message: 'Event not exist',
+  statusCode: 404
 }
 
 

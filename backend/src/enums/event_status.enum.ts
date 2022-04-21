@@ -1,0 +1,6 @@
+export enum EventStatus {
+  DID_NOT_START = 'DID_NOT_START',
+  IN_PROGRESS = 'IN_PROGRESS',
+  FINALIZED = 'FINALIZED',
+  CANCELLED = 'CANCELLED',
+}

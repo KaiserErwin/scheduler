@@ -1,13 +1,16 @@
 import {
   AllowNull,
   AutoIncrement,
+  BelongsTo,
   Column,
+  ForeignKey,
   HasMany,
   Model,
   PrimaryKey,
   Table,
   Unique,
 } from 'sequelize-typescript';
+import Attend from './attend.model';
 
 import { Session } from './session.model';
 
@@ -51,8 +54,11 @@ export class User extends Model<User> {
   @Column
   public deletedAt: Date;
 
-  @HasMany(() => Session, 'admin_id')
+  @HasMany(() => Session, 'user_id')
   public sessions: Session[];
+
+  @HasMany(() => Attend, 'user_id')
+  public attend: Attend[];
 }
 
 export default User;

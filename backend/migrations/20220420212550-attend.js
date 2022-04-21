@@ -2,26 +2,28 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return await queryInterface.createTable('event', {
-      event_id: {
-        type: Sequelize.INTEGER,
+    return await queryInterface.createTable('attend', {
+      attend_id: {
+        allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER,
       },
-      admin_id: {
+      event_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'admin',
-          key: 'admin_id',
+          model: 'event',
+          key: 'event_id',
         },
         allowNull: true,
       },
-      
-      address: {
-        type: Sequelize.STRING,
-      },
-      event_date: {
-        type: Sequelize.DATE,
+      user_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'user',
+          key: 'user_id',
+        },
+        allowNull: true,
       },
       created_at: {
         type: Sequelize.DATE,
@@ -41,6 +43,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    return await queryInterface.dropTable('event');
+    return await queryInterface.dropTable('attend');
   },
 };

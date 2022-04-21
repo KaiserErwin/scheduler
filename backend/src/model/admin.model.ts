@@ -8,6 +8,7 @@ import {
   Table,
   Unique,
 } from 'sequelize-typescript';
+import { Event } from './event.model';
 
 import { Session } from './session.model';
 
@@ -53,6 +54,9 @@ export class Admin extends Model<Admin> {
 
   @HasMany(() => Session, 'admin_id')
   public sessions: Session[];
+
+  @HasMany(() => Event, 'admin_id')
+  public events: Event[];
 }
 
-export default Admin
+export default Admin;
